@@ -6,7 +6,7 @@
 /*   By: ewoillar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 17:07:47 by ewoillar          #+#    #+#             */
-/*   Updated: 2024/01/20 18:54:36 by ewoillar         ###   ########.fr       */
+/*   Updated: 2024/01/20 19:14:31 by ewoillar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	check_column(int tab[ROWS][COLS], int size, Coord coord)
 	res = 0;
 	while (i < size -1)
 	{
-		if (i == coord.y)
+		if (i == coord.x)
 		{
 			i++;
 		}
@@ -56,7 +56,7 @@ int	check_row(int tab[ROWS][COLS], int size, Coord coord)
 	res = 0;
 	while (i < size -1)
 	{
-		if (i == coord.x)
+		if (i == coord.y)
 		{
 			i++;
 		}
@@ -109,20 +109,73 @@ int	check_rule_bottom(int tab[ROWS][COLS], int size, Coord coord)
 	max_mem = tab[current_coord.x][current_coord.y];
 	while (current_coord.x > 0)
 	{
-		current_coord.x++;
+		current_coord.x--;
 		if (tab[current_coord.x][current_coord.y] > max_mem)
 		{
 			max_mem = tab[current_coord.x][current_coord.y];
 			i_a++;
 		}
 	}
-	if (tab[0][coord.y] != i_a)
+	if (tab[size - 1][coord.y] != i_a)
 	{
 		res = -1;
 	}
 	return (res);
 }
 
+int	check_rule_left(int tab[ROWS][COLS], int size, Coord coord)
+{
+	Coord	current_coord;
+	int		max_mem;
+	int		i_a;
+	int		res;
+
+	current_coord = (Coord){coord.x, 1};
+	i_a = 1;
+	res = 0;
+	max_mem = tab[current_coord.x][current_coord.y];
+	while (current_coord.y < size - 1)
+	{
+		current_coord.y++;
+		if (tab[current_coord.x][current_coord.y] > max_mem)
+		{
+			max_mem = tab[current_coord.x][current_coord.y];
+			i_a++;
+		}
+	}
+	if (tab[coord.x][0] != i_a)
+	{
+		res = -1;
+	}
+	return (res);
+}
+
+int	check_rule_right(int tab[ROWS][COLS], int size, Coord coord)
+{
+	Coord	current_coord;
+	int		max_mem;
+	int		i_a;
+	int		res;
+
+	current_coord = (Coord){coord.x, size - 2};
+	i_a = 1;
+	res = 0;
+	max_mem = tab[current_coord.x][current_coord.y];
+	while (current_coord.y > 0)
+	{
+		current_coord.y--;
+		if (tab[current_coord.x][current_coord.y] > max_mem)
+		{
+			max_mem = tab[current_coord.x][current_coord.y];
+			i_a++;
+		}
+	}
+	if (tab[coord.x][size - 1] != i_a)
+	{
+		res = -1;
+	}
+	return (res);
+}
 int	check_rule(int tab[ROWS][COLS], int size, Coord coord)
 {
 	int	res;
@@ -163,11 +216,11 @@ int	main(void)
 {
 	Coord coord;
 	coord.x = 1;
-	coord.y = 1;
+	coord.y = 4;
 	int	matrix[ROWS][COLS] = 
 	{
 		{0, 4, 3, 2, 1, 0},
-		{4, 2, 2, 3, 4, 1},
+		{4, 1, 2, 3, 4, 1},
 		{3, 2, 3, 4, 1, 2},
 		{2, 3, 4, 1, 2, 2},
 		{1, 4, 1, 2, 3, 2},
